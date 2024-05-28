@@ -1,0 +1,15 @@
+[project]
+name = "devcontainer-repro"
+version = "0.0.1"
+description = "Default template for PDM package"
+authors = []
+dependencies = [
+    "promptflow>=1.9.0",
+    "promptflow-tools>=1.4.0",
+    "keyrings.alt>=5.0.1",
+]
+requires-python = "==3.11.*"
+readme = "README.md"
+
+[tool.pdm]
+distribution = false
