@@ -24,7 +24,7 @@
       "target": "/home/vscode/.promptflow"
     }
     // This fails, containerEnv is not recognized
-    //"source=${localWorkspaceFolderBasename}-node_modules,target=${containerEnv:HOME}/node_modules,type=volume"
+    // "source=${localWorkspaceFolderBasename}-node_modules,target=${containerEnv:PDM_PYTHON}/node_modules,type=volume"
   ],
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
