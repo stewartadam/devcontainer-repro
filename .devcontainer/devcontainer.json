@@ -1,0 +1,84 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
+{
+  "name": "Python Devcontainer",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+  // Rename the mount to /workspace
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
+  "containerEnv": {
+    "PDM_PYTHON": "/workspace/.venv"
+  },
+  "mounts": [
+    // Put Azure CLI user data in a volume so we only have to login once
+    {
+      "type": "volume",
+      "source": "${devcontainerId}-azclidata",
+      "target": "/home/vscode/.azure"
+    },
+    // Put PromptFlow user data in a volume so we only have to setup connections once
+    {
+      "type": "volume",
+      "source": "${devcontainerId}-pfdata",
+      "target": "/home/vscode/.promptflow"
+    }
+    // This fails, containerEnv is not recognized
+    //"source=${localWorkspaceFolderBasename}-node_modules,target=${containerEnv:HOME}/node_modules,type=volume"
+  ],
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    "ghcr.io/devcontainers/features/azure-cli:1": {
+      "version": "latest",
+      "extensions": "ml"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      // Bookworm repos provide 3.11.x, avoid a long manual compilation
+      //"version": "3.11"
+      "version": "os-provided"
+    },
+    "ghcr.io/devcontainers-contrib/features/pdm:2": {},
+  },
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // General editing
+        "ms-vsliveshare.vsliveshare",
+        "GitHub.copilot",
+        "EditorConfig.EditorConfig",
+        "streetsidesoftware.code-spell-checker",
+        // Markdown
+        "yzhang.markdown-all-in-one",
+        "DavidAnson.vscode-markdownlint",
+        "bierner.markdown-preview-github-styles",
+        "shd101wyy.markdown-preview-enhanced",
+        // Python tooling
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "ms-toolsai.jupyter",
+        // PromptFlow and AML-related
+        "prompt-flow.prompt-flow",
+        // Other serialization languages
+        "redhat.vscode-yaml",
+        "Alpha4.jsonl",
+        "foxundermoon.shell-format"
+      ],
+      "settings": {
+        "python.terminal.activateEnvironment": true,
+        "python.terminal.activateEnvInCurrentTerminal": true,
+        "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          },
+          "editor.formatOnSave": true
+        }
+      }
+    }
+  },
+  "postCreateCommand": "/bin/bash .devcontainer/post-create.sh",
+  "postStartCommand": "/bin/bash .devcontainer/post-start.sh"
+}
